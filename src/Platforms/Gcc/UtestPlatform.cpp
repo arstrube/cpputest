@@ -196,10 +196,15 @@ void* PlatformSpecificMemset(void* mem, int c, size_t size)
     return memset(mem, c, size);
 }
 
-
 double PlatformSpecificFabs(double d)
 {
-   return fabs(d);
+    if(PlatformSpecificIsNan(d))
+        return 0.0 / 0.0;
+    /* if nfinity
+        return infinity */
+    if(d == 0)
+        return (0.0);
+    return d < 0.0 ? -d : d;
 }
 
 static int IsNanImplementation(double d)
