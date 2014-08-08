@@ -153,12 +153,16 @@ void* PlatformSpecificMemset(void* mem, int c, size_t size)
     return NULL;
 }
 
-double PlatformSpecificFabs(double d)
+static double FabsImplementation(double d)
 {
-    /* To be implemented */
-    (void) d;
-    return 0.0;
+    if(PlatformSpecificIsNan(d))
+        return 0.0 / 0.0;
+    if(d == 1.0/0.0)
+        return 1.0/0.0;
+    return d < 0.0 ? -d : d;
 }
+
+double (*PlatformSpecificFabs)(double) = FabsImplementation;
 
 extern "C" {
 

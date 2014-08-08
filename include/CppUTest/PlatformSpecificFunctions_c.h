@@ -54,7 +54,7 @@ extern const char* (*GetPlatformSpecificTimeString)(void);
 int PlatformSpecificVSNprintf(char *str, size_t size, const char* format, va_list va_args_list);
 
 /* Misc */
-double PlatformSpecificFabs(double d);
+extern double (*PlatformSpecificFabs)(double d);
 extern int (*PlatformSpecificIsNan)(double d);
 int PlatformSpecificAtExit(void(*func)(void));
 
