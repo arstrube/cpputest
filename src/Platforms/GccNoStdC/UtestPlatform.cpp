@@ -31,6 +31,21 @@
 #undef calloc
 #undef realloc
 
+extern "C" {
+    
+/// #include "linux/kernel.h"
+int vsnprintf(char *buf, size_t size, const char *fmt, va_list args);
+
+/// #include "linux/vmalloc.h"    
+void * vmalloc(unsigned long);                           
+void vfree(void *);
+                                
+/// #include "linux/string.h"
+typedef unsigned int	__kernel_size_t;
+extern void * memset(void *, int, __kernel_size_t);
+
+}
+
 #include "CppUTest/PlatformSpecificFunctions.h"
 
 int PlatformSpecificSetJmp(void (*function) (void* data), void* data)
@@ -71,13 +86,7 @@ const char* (*GetPlatformSpecificTimeString)() = NULL;
 
 int PlatformSpecificVSNprintf(char *str, size_t size, const char* format, va_list args)
 {
-    /* To be implemented */
-    (void) size;
-    (void) args;
-    (void) format;
-    (void) args;
-    (void) str;
-    return 0;
+    return vsnprintf(str, size, format, args); 
 }
 
 PlatformSpecificFile PlatformSpecificFOpen(const char* filename, const char* flag)
@@ -116,23 +125,20 @@ int PlatformSpecificPutchar(int c)
 
 void* PlatformSpecificMalloc(size_t size)
 {
-    /* To be implemented */
-    (void) size;
-    return NULL;
+    return vmalloc(size);
 }
 
 void* PlatformSpecificRealloc (void* memory, size_t size)
 {
     /* To be implemented */
-    (void) memory;
-    (void) size;
+    (void)memory;
+    (void)size;
     return NULL;
 }
 
 void PlatformSpecificFree(void* memory)
 {
-    /* To be implemented */
-    (void) memory;
+    vfree(memory);
 }
 
 void* PlatformSpecificMemCpy(void* s1, const void* s2, size_t size)
@@ -146,11 +152,7 @@ void* PlatformSpecificMemCpy(void* s1, const void* s2, size_t size)
 
 void* PlatformSpecificMemset(void* mem, int c, size_t size)
 {
-    /* To be implemented */
-    (void) mem;
-    (void) c;
-    (void) size;
-    return NULL;
+   return memset(mem, c, size);
 }
 
 double PlatformSpecificFabs(double d)
