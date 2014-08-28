@@ -94,10 +94,12 @@ size_t SimpleString::StrLen(const char* str)
 
 int SimpleString::StrNCmp(const char* s1, const char* s2, size_t n)
 {
-    while (n && *s1 && *s1 == *s2) {
-        n--, s1++, s2++;
-    }
-    return n ? *(unsigned char *) s1 - *(unsigned char *) s2 : 0;
+    if (n == 0) return 0;
+    
+    for (; --n && *s1 && *s1++ == *s2++;)
+        ;
+        
+    return *(unsigned char *) s1 - *(unsigned char *) s2;
 }
 
 char* SimpleString::StrNCpy(char* s1, const char* s2, size_t n)
