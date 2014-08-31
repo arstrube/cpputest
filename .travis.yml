@@ -16,7 +16,7 @@ env:
       MNHlZmGu2WpoZREhOFBfsIhK0IP8mloqLDq2XemBdga/LWygrLU=
   - secure: Y/8iNkf6uEbE3qltnM+7mGlCvFWzyttwwRGgVGw1m9xOiUJcobvOImQRU8XZ91dgO+Fz0A3mljqs1sK1OPjpXmFGE1jP/NlotMw0WlDOuSIDjQ4ubwdTNGAwNY53R9ygbIjEmqxHAJm9mOZqxW2hNaoI7TcX6oX248/hLibyx8M=
 install:
-- gem install travis_github_deployer
+- gem install travis_github_deployer2
 - sudo apt-get update --fix-missing
 - sudo apt-get install valgrind
 before_script:
