@@ -77,7 +77,7 @@ bool CommandLineArguments::parse(TestPlugin* plugin)
 
 const char* CommandLineArguments::usage() const
 {
-    return "usage [-v] [-c] [-r#] [-g|sg groupName] [-n|sn testName] [-o{normal, junit}] [-k packageName]\n";
+    return "usage [-v] [-c] [-r#] [-g|sg groupName]... [-n|sn testName]... [\"[IGNORE_]TEST(groupName, testName)\"]... [-o{normal, junit}] [-k packageName]\n";
 }
 
 bool CommandLineArguments::isVerbose() const
@@ -101,16 +101,14 @@ int CommandLineArguments::getRepeatCount() const
     return repeat_;
 }
 
-TestFilter CommandLineArguments::getGroupFilter() const
+const TestFilter* CommandLineArguments::getGroupFilters() const
 {
-    /* TODO: Temporary fix */
-    return groupFilters_ ? *groupFilters_: TestFilter("");
+    return groupFilters_;
 }
 
-TestFilter CommandLineArguments::getNameFilter() const
+const TestFilter* CommandLineArguments::getNameFilters() const
 {
-    /* TODO: Temporary fix */
-    return nameFilters_ ? *nameFilters_ : TestFilter("");
+    return nameFilters_;
 }
 
 void CommandLineArguments::SetRepeatCount(int ac, const char** av, int& i)

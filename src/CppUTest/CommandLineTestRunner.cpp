@@ -85,8 +85,8 @@ int CommandLineTestRunner::runAllTestsMain()
 
 void CommandLineTestRunner::initializeTestRun()
 {
-    registry_->setGroupFilter(arguments_->getGroupFilter());
-    registry_->setNameFilter(arguments_->getNameFilter());
+    registry_->setGroupFilters(arguments_->getGroupFilters());
+    registry_->setNameFilters(arguments_->getNameFilters());
     if (arguments_->isVerbose()) output_->verbose();
     if (arguments_->isColor()) output_->color();
     if (arguments_->runTestsInSeperateProcess()) registry_->setRunTestsInSeperateProcess();
