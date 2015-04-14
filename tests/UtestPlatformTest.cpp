@@ -46,6 +46,14 @@ TEST(UtestPlatformTest, PlatformSpecificGetPlatformSpecificTimeStringWorksProper
     STRCMP_EQUAL("2015-04-29T03:22:55", GetPlatformSpecificTimeString());
 }
 
+TEST(UtestPlatformTest, FileFunctionsWorkProperly)
+{
+    PlatformSpecificFile file = PlatformSpecificFOpen("bla", "");
+    PlatformSpecificFPuts("Hello World\n", file);
+    STRCMP_EQUAL("Hello World\n", file_spy());
+    PlatformSpecificFClose(file);
+}
+
 TEST_GROUP(UTestPlatformsTest_PlatformSpecificRunTestInASeperateProcess)
 {
     TestTestingFixture fixture;

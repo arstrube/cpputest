@@ -33,4 +33,10 @@
 
 struct tm* localtime_stub(const time_t* timer);
 
+extern "C" FILE* fopen_stub (const char* fp, const char* flag);
+extern "C" int fputs_stub (const char* str, FILE* fp);
+extern "C" int fclose_stub (FILE* fp);
+extern "C" int fflush_stub (FILE* fp);
+extern "C" char* file_spy(void);
+
 #endif

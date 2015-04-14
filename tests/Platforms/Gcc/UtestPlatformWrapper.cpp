@@ -25,18 +25,57 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <string.h>
+#include <stdio.h>
 #include <time.h>
+
+#define FILE char
 
 #include "CppUTest/UtestPlatformWrapper.h"
 
+static char file_buffer[80];
 static tm   tm_stub;
+
+#undef  stdout
+#define stdout file_buffer
 
 struct tm* localtime_stub(const time_t*)
 {
     return &tm_stub;
 }
 
+FILE* fopen_stub (const char*, const char*)
+{
+    return (FILE*)file_buffer;
+}
+
+int fputs_stub (const char* str, FILE* fp)
+{
+    strcpy(fp, str);
+    return 0;
+}
+
+int fflush_stub (FILE* fp)
+{
+    *fp = '\0';
+    return 0;
+}
+
+int fclose_stub (FILE*)
+{
+    return 0;
+}
+
+char* file_spy()
+{
+    return file_buffer;
+}
+
 #define time(tm)                   0
 #define localtime(x)               localtime_stub((x))
+#define fopen(fname, flag)         fopen_stub((fname), (flag))
+#define fputs(str, fp)             fputs_stub((str), ((fp)))
+#define fclose(fp)                 fclose_stub((fp))
+#define fflush(fp)                 fflush_stub((fp))
 
 #include "../src/Platforms/Gcc/UtestPlatform.cpp"
