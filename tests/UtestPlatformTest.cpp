@@ -74,8 +74,8 @@ static int _accessViolationTestFunction()
 
 static int _divisionByZeroTestFunction()
 {
-    volatile int a = 1;
-    return 1 / (a - a);
+    int a = 0;
+    return 1 / *(volatile int*) &a;
 }
 
 #include <unistd.h>
