@@ -144,7 +144,7 @@ TEST(CommandLineTestRunner, JunitOutputAndVerboseEnabled)
 TEST(CommandLineTestRunner, listTestGroupNamesShouldWorkProperly)
 {
     const char* argv[] = { "tests.exe", "-lg" };
-    
+
     CommandLineTestRunnerWithStringBufferOutput commandLineTestRunner(2, argv, &registry);
     commandLineTestRunner.runAllTestsMain();
 
@@ -154,7 +154,7 @@ TEST(CommandLineTestRunner, listTestGroupNamesShouldWorkProperly)
 TEST(CommandLineTestRunner, listTestGroupAndCaseNamesShouldWorkProperly)
 {
     const char* argv[] = { "tests.exe", "-ln" };
-    
+
     CommandLineTestRunnerWithStringBufferOutput commandLineTestRunner(2, argv, &registry);
     commandLineTestRunner.runAllTestsMain();
 
@@ -194,12 +194,12 @@ TEST(CommandLineTestRunner, realJunitOutputShouldBeCreatedAndWorkProperly)
     UT_PTR_SET(PlatformSpecificFClose, FakeOutput::fclose_fake);
     int(*RealPutchar)(int)  = PlatformSpecificPutchar;
     PlatformSpecificPutchar = FakeOutput::putchar_fake;
-    
+
     CommandLineTestRunner realCommandLineTestRunner(4, argv, &registry);
     realCommandLineTestRunner.runAllTestsMain();
-    
+
     PlatformSpecificPutchar = RealPutchar; /* Must be restored immediately */
-    
-    STRCMP_CONTAINS("<testcase classname=\"package.group\" name=\"test\" time=\"0.000\">", FakeOutput::file.asCharString());
-    STRCMP_EQUAL("TEST(group, test) - 0 ms\n\nOK (1 tests, 1 ran, 0 checks, 0 ignored, 0 filtered out, 0 ms)\n\n", FakeOutput::console.asCharString());
+
+    STRCMP_CONTAINS("<testcase classname=\"package.group\" name=\"test\" time=\"", FakeOutput::file.asCharString());
+    STRCMP_CONTAINS("TEST(group, test) - 0 ms\n\nOK (1 tests, 1 ran, 0 checks, 0 ignored, 0 filtered out, ", FakeOutput::console.asCharString());
 }
