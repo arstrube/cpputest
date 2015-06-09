@@ -165,26 +165,31 @@ double (*PlatformSpecificFabs)(double) = fabs;
 int (*PlatformSpecificIsNan)(double) = IsNanImplementation;
 int (*PlatformSpecificAtExit)(void(*func)(void)) = atexit;  /// this was undefined before
 
-static PlatformSpecificMutex DummyMutexCreate(void)
+static unsigned char mutex_;
+
+static PlatformSpecificMutex IarMutexCreate(void)
 {
-    return 0;
+    return (PlatformSpecificMutex)&mutex_;
 }
 
-static void DummyMutexLock(PlatformSpecificMutex)
+static void IarMutexLock(PlatformSpecificMutex mutex)
+{
+    *(unsigned char*) mutex = __save_interrupt();
+    __disable_interrupt();
+}
+
+static void IarMutexUnlock(PlatformSpecificMutex mutex)
+{
+     __restore_interrupt(*(unsigned char*) mutex);
+}
+
+static void IarMutexDestroy(PlatformSpecificMutex)
 {
 }
 
-static void DummyMutexUnlock(PlatformSpecificMutex)
-{
-}
-
-static void DummyMutexDestroy(PlatformSpecificMutex)
-{
-}
-
-PlatformSpecificMutex (*PlatformSpecificMutexCreate)(void) = DummyMutexCreate;
-void (*PlatformSpecificMutexLock)(PlatformSpecificMutex) = DummyMutexLock;
-void (*PlatformSpecificMutexUnlock)(PlatformSpecificMutex) = DummyMutexUnlock;
-void (*PlatformSpecificMutexDestroy)(PlatformSpecificMutex) = DummyMutexDestroy;
+PlatformSpecificMutex (*PlatformSpecificMutexCreate)(void) = IarMutexCreate;
+void (*PlatformSpecificMutexLock)(PlatformSpecificMutex) = IarMutexLock;
+void (*PlatformSpecificMutexUnlock)(PlatformSpecificMutex) = IarMutexUnlock;
+void (*PlatformSpecificMutexDestroy)(PlatformSpecificMutex) = IarMutexDestroy;
 
 }
