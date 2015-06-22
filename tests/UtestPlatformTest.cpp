@@ -51,7 +51,10 @@ static void _failFunction()
     FAIL("This test fails");
 }
 
-#include <errno.h>
+// Definitions from #include <errno.h>
+#define EINTR 4
+extern int *_errno();
+#define errno (*_errno())
 
 extern "C" {
 
@@ -83,8 +86,11 @@ static int _accessViolationTestFunction()
     return *(volatile int*) 0;
 }
 
-#include <unistd.h>
-#include <signal.h>
+// Definitions from <unistd.h> and <signal.h>
+#define SIGSTOP 19  // some systems use 17
+typedef size_t pid_t;
+pid_t getpid(void);
+int kill(pid_t, int);
 
 static void _stoppedTestFunction()
 {
