@@ -34,3 +34,9 @@ TEST(CheatSheet, TestName)
     STRCMP_EQUAL("HelloWorld", "HelloWorld");
 }
 
+TEST(CheatSheet, FailsOn16BitSystemsOnly)
+{
+    int a = 9000;
+    long b = a * 1000;
+    LONGS_EQUAL(9000000, b);
+}
