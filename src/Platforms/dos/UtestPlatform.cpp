@@ -72,7 +72,7 @@ void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell*, TestPlugin*, Test
 
 extern "C" {
 
-static int x86SetJmp(void (*function) (void* data), void* data)
+static int DosSetJmp(void (*function) (void* data), void* data)
 {
     if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
         jmp_buf_index++;
@@ -83,24 +83,24 @@ static int x86SetJmp(void (*function) (void* data), void* data)
     return 0;
 }
 
-static void  x86LongJmp()
+static void  DosLongJmp()
 {
     jmp_buf_index--;
     longjmp(test_exit_jmp_buf[jmp_buf_index], 1);
 }
 
-static void  x86RestoreJumpBuffer()
+static void  DosRestoreJumpBuffer()
 {
     jmp_buf_index--;
 }
 
-int (*PlatformSpecificSetJmp)(void (*function) (void*), void*) = x86SetJmp;
-void (*PlatformSpecificLongJmp)(void) = x86LongJmp;
-void (*PlatformSpecificRestoreJumpBuffer)(void) = x86RestoreJumpBuffer;
+int (*PlatformSpecificSetJmp)(void (*function) (void*), void*) = DosSetJmp;
+void (*PlatformSpecificLongJmp)(void) = DosLongJmp;
+void (*PlatformSpecificRestoreJumpBuffer)(void) = DosRestoreJumpBuffer;
 
-static long x86TimeInMillis()
+static long DosTimeInMillis()
 {
-    /* The TI x86 platform does not have Posix support and thus lacks struct timespec.
+    /* The TI Dos platform does not have Posix support and thus lacks struct timespec.
      * Also, clock() always returns 0 in the simulator. Hence we work with struct tm.tm_hour
      * This has two consequences:
      *   (1) We need to sum up the part in order to get an "elapsed since" time value,
@@ -121,31 +121,31 @@ static const char* TimeStringImplementation()
     return ctime(&tm);
 }
 
-long (*GetPlatformSpecificTimeInMillis)() = x86TimeInMillis;
+long (*GetPlatformSpecificTimeInMillis)() = DosTimeInMillis;
 const char* (*GetPlatformSpecificTimeString)() = TimeStringImplementation;
 
 extern int (*PlatformSpecificVSNprintf)(char *, size_t, const char*, va_list) = vsnprintf;
 
-PlatformSpecificFile x86FOpen(const char* filename, const char* flag)
+PlatformSpecificFile DosFOpen(const char* filename, const char* flag)
 {
     return fopen(filename, flag);
 }
 
-static void x86FPuts(const char* str, PlatformSpecificFile file)
+static void DosFPuts(const char* str, PlatformSpecificFile file)
 {
    fputs(str, (FILE*)file);
 }
 
-static void x86FClose(PlatformSpecificFile file)
+static void DosFClose(PlatformSpecificFile file)
 {
    fclose((FILE*)file);
 }
 
-PlatformSpecificFile (*PlatformSpecificFOpen)(const char* filename, const char* flag) = x86FOpen;
-void (*PlatformSpecificFPuts)(const char* str, PlatformSpecificFile file) = x86FPuts;
-void (*PlatformSpecificFClose)(PlatformSpecificFile file) = x86FClose;
+PlatformSpecificFile (*PlatformSpecificFOpen)(const char* filename, const char* flag) = DosFOpen;
+void (*PlatformSpecificFPuts)(const char* str, PlatformSpecificFile file) = DosFPuts;
+void (*PlatformSpecificFClose)(PlatformSpecificFile file) = DosFClose;
 
-static int x86Putchar(int c)
+static int DosPutchar(int c)
 {
 #if USE_BUFFER_OUTPUT
     if(idx < BUFFER_SIZE) {
@@ -162,44 +162,44 @@ static int x86Putchar(int c)
 #endif
 }
 
-static void x86Flush()
+static void DosFlush()
 {
   fflush(stdout);
 }
 
-extern int (*PlatformSpecificPutchar)(int c) = x86Putchar;
-extern void (*PlatformSpecificFlush)(void) = x86Flush;
+extern int (*PlatformSpecificPutchar)(int c) = DosPutchar;
+extern void (*PlatformSpecificFlush)(void) = DosFlush;
 
-static void* x86Malloc(size_t size)
+static void* DosMalloc(size_t size)
 {
    return malloc(size);
 }
 
-static void* x86Realloc (void* memory, size_t size)
+static void* DosRealloc (void* memory, size_t size)
 {
     return realloc(memory, size);
 }
 
-static void x86Free(void* memory)
+static void DosFree(void* memory)
 {
     free(memory);
 }
 
-static void* x86MemCpy(void* s1, const void* s2, size_t size)
+static void* DosMemCpy(void* s1, const void* s2, size_t size)
 {
     return memcpy(s1, s2, size);
 }
 
-static void* x86Memset(void* mem, int c, size_t size)
+static void* DosMemset(void* mem, int c, size_t size)
 {
     return memset(mem, c, size);
 }
 
-void* (*PlatformSpecificMalloc)(size_t size) = x86Malloc;
-void* (*PlatformSpecificRealloc)(void* memory, size_t size) = x86Realloc;
-void (*PlatformSpecificFree)(void* memory) = x86Free;
-void* (*PlatformSpecificMemCpy)(void* s1, const void* s2, size_t size) = x86MemCpy;
-void* (*PlatformSpecificMemset)(void* mem, int c, size_t size) = x86Memset;
+void* (*PlatformSpecificMalloc)(size_t size) = DosMalloc;
+void* (*PlatformSpecificRealloc)(void* memory, size_t size) = DosRealloc;
+void (*PlatformSpecificFree)(void* memory) = DosFree;
+void* (*PlatformSpecificMemCpy)(void* s1, const void* s2, size_t size) = DosMemCpy;
+void* (*PlatformSpecificMemset)(void* mem, int c, size_t size) = DosMemset;
 
 /*
 double PlatformSpecificFabs(double d)
