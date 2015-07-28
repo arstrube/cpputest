@@ -157,11 +157,6 @@ class defaultUtestShell: public UtestShell
 {
 };
 
-TEST(UtestShell, thisIs5000BytesOfCode_or1680BytesOfCodeOptizingForSpace)
-{
-    ;
-}
-
 TEST(UtestShell, this_test_covers_the_UtestShell_createTest_and_Utest_testBody_methods)
 {
     defaultUtestShell shell;
