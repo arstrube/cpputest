@@ -62,17 +62,17 @@ TestOutput::WorkingEnvironment PlatformSpecificGetWorkingEnvironment()
     return TestOutput::eclipse;
 }
 
-static void C2000RunTestInASeperateProcess(UtestShell* shell, TestPlugin* plugin, TestResult* result)
+static void DummyRunTestInASeperateProcess(UtestShell* shell, TestPlugin* plugin, TestResult* result)
 {
     result->addFailure(TestFailure(shell, "-p doesn't work on this platform, as it is lacking fork.\b"));
 }
 
 void (*PlatformSpecificRunTestInASeperateProcess)(UtestShell*, TestPlugin*, TestResult*) =
-    C2000RunTestInASeperateProcess;
+    DummyRunTestInASeperateProcess;
 
 extern "C" {
 
-static int C2000SetJmp(void (*function) (void* data), void* data)
+static int x86SetJmp(void (*function) (void* data), void* data)
 {
     if (0 == setjmp(test_exit_jmp_buf[jmp_buf_index])) {
         jmp_buf_index++;
@@ -83,24 +83,24 @@ static int C2000SetJmp(void (*function) (void* data), void* data)
     return 0;
 }
 
-static void  C2000LongJmp()
+static void  x86LongJmp()
 {
     jmp_buf_index--;
     longjmp(test_exit_jmp_buf[jmp_buf_index], 1);
 }
 
-static void  C2000RestoreJumpBuffer()
+static void  x86RestoreJumpBuffer()
 {
     jmp_buf_index--;
 }
 
-int (*PlatformSpecificSetJmp)(void (*function) (void*), void*) = C2000SetJmp;
-void (*PlatformSpecificLongJmp)(void) = C2000LongJmp;
-void (*PlatformSpecificRestoreJumpBuffer)(void) = C2000RestoreJumpBuffer;
+int (*PlatformSpecificSetJmp)(void (*function) (void*), void*) = x86SetJmp;
+void (*PlatformSpecificLongJmp)(void) = x86LongJmp;
+void (*PlatformSpecificRestoreJumpBuffer)(void) = x86RestoreJumpBuffer;
 
-static long C2000TimeInMillis()
+static long x86TimeInMillis()
 {
-    /* The TI c2000 platform does not have Posix support and thus lacks struct timespec.
+    /* The TI x86 platform does not have Posix support and thus lacks struct timespec.
      * Also, clock() always returns 0 in the simulator. Hence we work with struct tm.tm_hour
      * This has two consequences:
      *   (1) We need to sum up the part in order to get an "elapsed since" time value,
@@ -121,31 +121,31 @@ static const char* TimeStringImplementation()
     return ctime(&tm);
 }
 
-long (*GetPlatformSpecificTimeInMillis)() = C2000TimeInMillis;
+long (*GetPlatformSpecificTimeInMillis)() = x86TimeInMillis;
 const char* (*GetPlatformSpecificTimeString)() = TimeStringImplementation;
 
 extern int (*PlatformSpecificVSNprintf)(char *, size_t, const char*, va_list) = vsnprintf;
 
-PlatformSpecificFile C2000FOpen(const char* filename, const char* flag)
+PlatformSpecificFile x86FOpen(const char* filename, const char* flag)
 {
     return fopen(filename, flag);
 }
 
-static void C2000FPuts(const char* str, PlatformSpecificFile file)
+static void x86FPuts(const char* str, PlatformSpecificFile file)
 {
    fputs(str, (FILE*)file);
 }
 
-static void C2000FClose(PlatformSpecificFile file)
+static void x86FClose(PlatformSpecificFile file)
 {
    fclose((FILE*)file);
 }
 
-PlatformSpecificFile (*PlatformSpecificFOpen)(const char* filename, const char* flag) = C2000FOpen;
-void (*PlatformSpecificFPuts)(const char* str, PlatformSpecificFile file) = C2000FPuts;
-void (*PlatformSpecificFClose)(PlatformSpecificFile file) = C2000FClose;
+PlatformSpecificFile (*PlatformSpecificFOpen)(const char* filename, const char* flag) = x86FOpen;
+void (*PlatformSpecificFPuts)(const char* str, PlatformSpecificFile file) = x86FPuts;
+void (*PlatformSpecificFClose)(PlatformSpecificFile file) = x86FClose;
 
-static int CL2000Putchar(int c)
+static int x86Putchar(int c)
 {
 #if USE_BUFFER_OUTPUT
     if(idx < BUFFER_SIZE) {
@@ -162,44 +162,44 @@ static int CL2000Putchar(int c)
 #endif
 }
 
-static void CL2000Flush()
+static void x86Flush()
 {
   fflush(stdout);
 }
 
-extern int (*PlatformSpecificPutchar)(int c) = CL2000Putchar;
-extern void (*PlatformSpecificFlush)(void) = CL2000Flush;
+extern int (*PlatformSpecificPutchar)(int c) = x86Putchar;
+extern void (*PlatformSpecificFlush)(void) = x86Flush;
 
-static void* C2000Malloc(size_t size)
+static void* x86Malloc(size_t size)
 {
    return malloc(size);
 }
 
-static void* C2000Realloc (void* memory, size_t size)
+static void* x86Realloc (void* memory, size_t size)
 {
     return realloc(memory, size);
 }
 
-static void C2000Free(void* memory)
+static void x86Free(void* memory)
 {
     free(memory);
 }
 
-static void* C2000MemCpy(void* s1, const void* s2, size_t size)
+static void* x86MemCpy(void* s1, const void* s2, size_t size)
 {
     return memcpy(s1, s2, size);
 }
 
-static void* C2000Memset(void* mem, int c, size_t size)
+static void* x86Memset(void* mem, int c, size_t size)
 {
     return memset(mem, c, size);
 }
 
-void* (*PlatformSpecificMalloc)(size_t size) = C2000Malloc;
-void* (*PlatformSpecificRealloc)(void* memory, size_t size) = C2000Realloc;
-void (*PlatformSpecificFree)(void* memory) = C2000Free;
-void* (*PlatformSpecificMemCpy)(void* s1, const void* s2, size_t size) = C2000MemCpy;
-void* (*PlatformSpecificMemset)(void* mem, int c, size_t size) = C2000Memset;
+void* (*PlatformSpecificMalloc)(size_t size) = x86Malloc;
+void* (*PlatformSpecificRealloc)(void* memory, size_t size) = x86Realloc;
+void (*PlatformSpecificFree)(void* memory) = x86Free;
+void* (*PlatformSpecificMemCpy)(void* s1, const void* s2, size_t size) = x86MemCpy;
+void* (*PlatformSpecificMemset)(void* mem, int c, size_t size) = x86Memset;
 
 /*
 double PlatformSpecificFabs(double d)
