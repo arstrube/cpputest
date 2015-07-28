@@ -157,7 +157,7 @@ class defaultUtestShell: public UtestShell
 {
 };
 
-TEST(UtestShell, ThisIs5kOfCode)
+TEST(UtestShell, thisIs5000BytesOfCode_or1680BytesOfCodeOptizingForSpace)
 {
     ;
 }
@@ -183,7 +183,7 @@ TEST(UtestShell, RunInSeparateProcessTest)
     fixture.assertPrintContains("Failed in separate process");
 }
 
-#if defined(__MINGW32__) || defined(_MSC_VER) || defined(__IAR_SYSTEMS_ICC__) || defined(__ARMCC_VERSION) || defined(__TMS320C2000__)
+#if defined(__MINGW32__) || defined(_MSC_VER) || defined(__IAR_SYSTEMS_ICC__) || defined(__ARMCC_VERSION) || defined(__TMS320C2000__) || defined(__X86__)
 
 IGNORE_TEST(UtestShell, TestDefaultCrashMethodInSeparateProcessTest) {}
 

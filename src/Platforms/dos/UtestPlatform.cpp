@@ -211,12 +211,12 @@ double (*PlatformSpecificFabs)(double) = fabs;
 
 static int IsNanImplementation(double d)
 {
-    return 0;
+    return isnan(d);
 }
 
 static int IsInfImplementation(double d)
 {
-    return 0;
+    return isinf(d);
 }
 
 int (*PlatformSpecificIsNan)(double d) = IsNanImplementation;
