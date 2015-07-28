@@ -157,6 +157,11 @@ class defaultUtestShell: public UtestShell
 {
 };
 
+TEST(UtestShell, ThisIs5kOfCode)
+{
+    ;
+}
+
 TEST(UtestShell, this_test_covers_the_UtestShell_createTest_and_Utest_testBody_methods)
 {
     defaultUtestShell shell;
