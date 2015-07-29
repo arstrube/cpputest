@@ -612,14 +612,14 @@ TEST(MockExpectedCallComposite, hasIntReturnValue)
     STRCMP_EQUAL("int", call.returnValue().getType().asCharString());
     LONGS_EQUAL(-5, call.returnValue().getIntValue());
 }
-#if 0
+
 TEST(MockExpectedCallComposite, hasLongIntReturnValue)
 {
     composite.andReturnValue((long int) -17);
     STRCMP_EQUAL("long int", call.returnValue().getType().asCharString());
     LONGS_EQUAL(-17, call.returnValue().getLongIntValue());
 }
-#endif
+
 TEST(MockExpectedCallComposite, hasUnsignedLongIntReturnValue)
 {
     composite.andReturnValue((unsigned long int) 6);
