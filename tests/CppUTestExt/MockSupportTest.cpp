@@ -70,6 +70,49 @@ TEST_GROUP(MockSupportTest)
 
 };
 
+class MyTypeForTesting
+{
+public:
+    MyTypeForTesting(long val)
+    {
+        value = new long(val);
+    }
+    virtual ~MyTypeForTesting()
+    {
+        delete value;
+    }
+    long *value;
+};
+
+class MyTypeForTestingComparator : public MockNamedValueComparator
+{
+public:
+    virtual bool isEqual(const void* object1, const void* object2)
+    {
+        const MyTypeForTesting* obj1 = (const MyTypeForTesting*) object1;
+        const MyTypeForTesting* obj2 = (const MyTypeForTesting*) object2;
+        return *(obj1->value) == *(obj2->value);
+    }
+    virtual SimpleString valueToString(const void* object)
+    {
+        const MyTypeForTesting* obj = (const MyTypeForTesting*) object;
+        return StringFrom(*(obj->value));
+    }
+};
+
+class MyTypeForTestingCopier : public MockNamedValueCopier
+{
+public:
+    virtual void copy(void* dst_, const void* src_)
+    {
+        MyTypeForTesting* dst = (MyTypeForTesting*) dst_;
+        const MyTypeForTesting* src = (const MyTypeForTesting*) src_;
+        *(dst->value) = *(src->value);
+    }
+};
+
+#ifndef MOCKSUPPORTTEST_DONT_COMPILE_FIRST_HALF
+
 TEST(MockSupportTest, clear)
 {
     mock().expectOneCall("func");
@@ -659,7 +702,6 @@ TEST(MockSupportTest, ignoreOtherParametersMultipleCallsButOneDidntHappen)
     CHECK_EXPECTED_MOCK_FAILURE(expectedFailure);
 }
 
-
 TEST(MockSupportTest, newCallStartsWhileNotAllParametersWerePassed)
 {
     addFunctionToExpectationsList("foo")->withParameter("p1", 1);
@@ -683,47 +725,6 @@ TEST(MockSupportTest, threeExpectedAndActual)
     mock().checkExpectations();
     CHECK_NO_MOCK_FAILURE();
 }
-
-class MyTypeForTesting
-{
-public:
-    MyTypeForTesting(long val)
-    {
-        value = new long(val);
-    }
-    virtual ~MyTypeForTesting()
-    {
-        delete value;
-    }
-    long *value;
-};
-
-class MyTypeForTestingComparator : public MockNamedValueComparator
-{
-public:
-    virtual bool isEqual(const void* object1, const void* object2)
-    {
-        const MyTypeForTesting* obj1 = (const MyTypeForTesting*) object1;
-        const MyTypeForTesting* obj2 = (const MyTypeForTesting*) object2;
-        return *(obj1->value) == *(obj2->value);
-    }
-    virtual SimpleString valueToString(const void* object)
-    {
-        const MyTypeForTesting* obj = (const MyTypeForTesting*) object;
-        return StringFrom(*(obj->value));
-    }
-};
-
-class MyTypeForTestingCopier : public MockNamedValueCopier
-{
-public:
-    virtual void copy(void* dst_, const void* src_)
-    {
-        MyTypeForTesting* dst = (MyTypeForTesting*) dst_;
-        const MyTypeForTesting* src = (const MyTypeForTesting*) src_;
-        *(dst->value) = *(src->value);
-    }
-};
 
 TEST(MockSupportTest, customObjectParameterFailsWhenNotHavingAComparisonRepository)
 {
@@ -1189,6 +1190,10 @@ TEST(MockSupportTest, customTypeOutputAndInputParametersOfSameNameInDifferentFun
 
     mock().removeAllComparatorsAndCopiers();
 }
+
+#endif
+
+#ifndef MOCKSUPPORTTEST_DONT_COMPILE_SECOND_HALF
 
 TEST(MockSupportTest, twoCustomTypeOutputParametersOfSameNameInDifferentFunctionsSucceeds)
 {
@@ -2228,3 +2233,4 @@ TEST_ORDERED(MockSupportTestWithFixture, nextTestShouldNotCrashOnFailure, 11)
 
     UtestShell::resetCrashMethod();
 }
+#endif
