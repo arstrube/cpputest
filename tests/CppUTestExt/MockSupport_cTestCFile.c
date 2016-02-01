@@ -33,11 +33,6 @@ static int typeNameIsEqual(const void* object1, const void* object2)
     return object1 == object2;
 }
 
-static const char* typeNameValueToString(const void* object)
-{
-    return (const char*) object;
-}
-
 void all_mock_support_c_calls(void)
 {
     mock_c()->strictOrder();
@@ -83,7 +78,7 @@ void all_mock_support_c_calls(void)
 
     mock_c()->clear();
 
-    mock_c()->installComparator("typeName", typeNameIsEqual, typeNameValueToString);
+    mock_c()->installComparator("typeName", typeNameIsEqual, (MockTypeValueToStringFunction_c) 0);
     mock_c()->expectOneCall("boo")->withParameterOfType("typeName", "name", (void*) 1);
     mock_c()->actualCall("boo")->withParameterOfType("typeName", "name", (void*) 1);
     mock_c()->clear();
