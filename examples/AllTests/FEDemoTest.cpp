@@ -54,9 +54,18 @@ TEST_GROUP(FE_Demo) {
 
 #ifdef RUN_FAILING_TESTS
 #define FAILING_TEST TEST
+#define CRASHING_TEST TEST
 #else
 #define FAILING_TEST IGNORE_TEST
+#define CRASHING_TEST IGNORE_TEST
 #endif
+
+CRASHING_TEST(FE_Demo, should_crash_when__feenableexcept_was_called) {
+    f = 1.0f;
+    IEEE754ExceptionsPlugin::enableSignal();
+    CHECK((f /= 0.0f) >= std::numeric_limits<float>::infinity() );
+    IEEE754ExceptionsPlugin::disableSignal();
+}
 
 FAILING_TEST(FE_Demo, should_fail_when__FE_DIVBYZERO__is_set) {
     f = 1.0f;

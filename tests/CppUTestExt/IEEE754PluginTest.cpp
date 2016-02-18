@@ -45,6 +45,19 @@ TEST_GROUP(FE__with_Plugin) {
     }
 };
 
+#if CPPUTEST_FENV_LACKS_SIGNALLING || !defined(HAVE_FORK)
+IGNORE_TEST(FE__with_Plugin, should_crash___when__feenableexcept_was_called) {}
+#else
+TEST(FE__with_Plugin, should_crash___when__feenableexcept_was_called) {
+    IEEE754ExceptionsPlugin::enableSignal();
+    fixture.setTestFunction(set_divisionbyzero_c);
+    fixture.registry_->setRunTestsInSeperateProcess();
+    fixture.runAllTests();
+    fixture.assertPrintContains("Failed in separate process - killed by signal 8");
+    IEEE754ExceptionsPlugin::disableSignal();
+}
+#endif
+
 TEST(FE__with_Plugin, should_fail____when__FE_DIVBYZERO__is_set) {
     fixture.setTestFunction(set_divisionbyzero_c);
     fixture.runAllTests();
