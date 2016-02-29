@@ -51,10 +51,16 @@ IGNORE_TEST(FE__with_Plugin, should_crash___when__feenableexcept_was_called)
 {
 }
 #else
+static volatile float f = 0.0f;
+static void func_(void)
+{
+    feenableexcept(FE_ALL_EXCEPT);
+    f = 0.0 / f;
+}
 TEST(FE__with_Plugin, should_crash___when__feenableexcept_was_called)
 {
     IEEE754ExceptionsPlugin::enableSignal();
-    fixture.setTestFunction(set_divisionbyzero_c);
+    fixture.setTestFunction(func_);
     fixture.registry_->setRunTestsInSeperateProcess();
     fixture.runAllTests();
     fixture.assertPrintContains("Failed in separate process - killed by signal 8");
