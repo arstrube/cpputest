@@ -51,11 +51,12 @@ IGNORE_TEST(FE__with_Plugin, should_crash___when__feenableexcept_was_called)
 {
 }
 #else
-static volatile float f = 0.0f;
+#include <fenv.h>
+static volatile double d = 0.0;
 static void func_(void)
 {
     feenableexcept(FE_ALL_EXCEPT);
-    f = 0.0 / f;
+    d = 0.0 / d;
 }
 TEST(FE__with_Plugin, should_crash___when__feenableexcept_was_called)
 {
