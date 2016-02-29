@@ -51,6 +51,7 @@ IGNORE_TEST(FE__with_Plugin, should_crash___when__feenableexcept_was_called)
 static volatile double d = 0.0;
 static void func_(void)
 {
+    IEEE754ExceptionsPlugin::enableSignal();
     d = 0.0 / d;
 }
 TEST(FE__with_Plugin, should_crash___when__feenableexcept_was_called)
