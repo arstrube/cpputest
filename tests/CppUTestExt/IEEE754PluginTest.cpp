@@ -40,10 +40,6 @@ extern "C" {
 TEST_GROUP(FE__with_Plugin)
 {
     TestTestingFixture fixture;
-//    IEEE754ExceptionsPlugin ieee754Plugin;
-    void setup(void) _override {
-//        fixture.registry_->installPlugin(&ieee754Plugin);
-    }
 };
 
 #if CPPUTEST_FENV_LACKS_SIGNALLING || !defined(HAVE_FORK)
@@ -55,12 +51,11 @@ IGNORE_TEST(FE__with_Plugin, should_crash___when__feenableexcept_was_called)
 static volatile double d = 0.0;
 static void func_(void)
 {
-//    feenableexcept(FE_ALL_EXCEPT);
-    d = 0.0 / d;
+//    d = 0.0 / d;
 }
 TEST(FE__with_Plugin, should_crash___when__feenableexcept_was_called)
 {
-    IEEE754ExceptionsPlugin::enableSignal();
+//    IEEE754ExceptionsPlugin::enableSignal();
     fixture.setTestFunction(func_);
     fixture.registry_->setRunTestsInSeperateProcess();
     fixture.runAllTests();
