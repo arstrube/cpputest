@@ -40,7 +40,7 @@ extern "C" {
 TEST_GROUP(FE__with_Plugin)
 {
     TestTestingFixture fixture;
-    IEEE754ExceptionsPlugin ieee754Plugin;
+//    IEEE754ExceptionsPlugin ieee754Plugin;
     void setup(void) _override {
 //        fixture.registry_->installPlugin(&ieee754Plugin);
     }
@@ -55,7 +55,7 @@ IGNORE_TEST(FE__with_Plugin, should_crash___when__feenableexcept_was_called)
 static volatile double d = 0.0;
 static void func_(void)
 {
-    feenableexcept(FE_ALL_EXCEPT);
+//    feenableexcept(FE_ALL_EXCEPT);
     d = 0.0 / d;
 }
 TEST(FE__with_Plugin, should_crash___when__feenableexcept_was_called)
@@ -65,7 +65,6 @@ TEST(FE__with_Plugin, should_crash___when__feenableexcept_was_called)
     fixture.registry_->setRunTestsInSeperateProcess();
     fixture.runAllTests();
     fixture.assertPrintContains("Failed in separate process - killed by signal 8");
-    IEEE754ExceptionsPlugin::disableSignal();
 }
 #endif
 #if 0
