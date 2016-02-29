@@ -42,7 +42,7 @@ TEST_GROUP(FE__with_Plugin)
     TestTestingFixture fixture;
     IEEE754ExceptionsPlugin ieee754Plugin;
     void setup(void) _override {
-        fixture.registry_->installPlugin(&ieee754Plugin);
+//        fixture.registry_->installPlugin(&ieee754Plugin);
     }
 };
 
@@ -68,7 +68,7 @@ TEST(FE__with_Plugin, should_crash___when__feenableexcept_was_called)
     IEEE754ExceptionsPlugin::disableSignal();
 }
 #endif
-
+#if 0
 TEST(FE__with_Plugin, should_fail____when__FE_DIVBYZERO__is_set)
 {
     fixture.setTestFunction(set_divisionbyzero_c);
@@ -170,5 +170,6 @@ IGNORE_TEST(IEEE754ExceptionsPlugin2, should_not_fail_in_ignored_test)
 {
     set_everything_c();
 }
+#endif
 
 #endif
