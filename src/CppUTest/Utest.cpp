@@ -488,8 +488,12 @@ void UtestShell::print(const SimpleString& text, const char* fileName, int lineN
     print(text.asCharString(), fileName, lineNumber);
 }
 
+extern "C++" {
+
 TestResult* UtestShell::testResult_ = NULL;
 UtestShell* UtestShell::currentTest_ = NULL;
+
+}
 
 void UtestShell::setTestResult(TestResult* result)
 {

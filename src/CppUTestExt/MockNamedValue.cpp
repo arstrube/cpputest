@@ -29,10 +29,10 @@
 #include "CppUTestExt/MockNamedValue.h"
 #include "CppUTest/PlatformSpecificFunctions.h"
 
+MockNamedValueComparatorsAndCopiersRepository* MockNamedValue::defaultRepository_ = NULL;
+
 extern "C"
 {
-
-MockNamedValueComparatorsAndCopiersRepository* MockNamedValue::defaultRepository_ = NULL;
 
 void MockNamedValue::setDefaultComparatorsAndCopiersRepository(MockNamedValueComparatorsAndCopiersRepository* repository)
 {
