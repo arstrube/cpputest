@@ -35,6 +35,9 @@
 class MockFailureReporter;
 class MockFailure;
 
+extern "C"
+{
+    
 class MockActualCall
 {
 public:
@@ -100,5 +103,7 @@ public:
 
     virtual MockActualCall& onObject(const void* objectPtr)=0;
 };
+
+}
 
 #endif

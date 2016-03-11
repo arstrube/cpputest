@@ -30,6 +30,9 @@
 
 class MockNamedValue;
 
+extern "C"
+{
+
 extern SimpleString StringFrom(const MockNamedValue& parameter);
 
 class MockExpectedCall
@@ -77,5 +80,7 @@ public:
 
     virtual MockExpectedCall& onObject(void* objectPtr)=0;
 };
+
+}
 
 #endif

@@ -28,6 +28,8 @@
 
 #include "CppUTest/TestHarness.h"
 #include "MockFailureReporterForTest.h"
+extern "C"
+{
 
 TEST_GROUP(MockParameterTest)
 {
@@ -718,3 +720,4 @@ TEST(MockParameterTest, expectMultipleMultipleCallsWithParameters)
     mock().checkExpectations();
 }
 
+}

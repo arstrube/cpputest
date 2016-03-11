@@ -31,6 +31,9 @@
 #include "TestRegistry.h"
 #include "TestOutput.h"
 
+extern "C"
+{
+
 class TestTestingFixture
 {
 public:
@@ -135,5 +138,7 @@ public:
         booleanToSet_ = true;
     }
 };
+
+}
 
 #endif

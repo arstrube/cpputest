@@ -36,6 +36,9 @@
 class UtestShell;
 class MockSupport;
 
+extern "C"
+{
+
 /* This allows access to "the global" mocking support for easier testing */
 MockSupport& mock(const SimpleString& mockName = "", MockFailureReporter* failureReporterForThisCall = NULL);
 
@@ -155,6 +158,8 @@ private:
     SimpleString appendScopeToName(const SimpleString& functionName);
     
 };
+
+}
 
 #endif
 

@@ -31,6 +31,9 @@
 #include "CppUTestExt/MockFailure.h"
 #include "CppUTest/PlatformSpecificFunctions.h"
 
+extern "C"
+{
+
 MockActualCall::MockActualCall()
 {
 }
@@ -783,3 +786,4 @@ MockIgnoredActualCall& MockIgnoredActualCall::instance()
     return call;
 }
 
+}

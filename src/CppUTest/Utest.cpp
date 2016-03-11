@@ -30,6 +30,8 @@
 #include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/TestOutput.h"
 
+extern "C" {
+
 bool doubles_equal(double d1, double d2, double threshold)
 {
     if (PlatformSpecificIsNan(d1) || PlatformSpecificIsNan(d2) || PlatformSpecificIsNan(threshold))
@@ -486,8 +488,12 @@ void UtestShell::print(const SimpleString& text, const char* fileName, int lineN
     print(text.asCharString(), fileName, lineNumber);
 }
 
+extern "C++" {
+
 TestResult* UtestShell::testResult_ = NULL;
 UtestShell* UtestShell::currentTest_ = NULL;
+
+}
 
 void UtestShell::setTestResult(TestResult* result)
 {
@@ -674,4 +680,6 @@ TestInstaller::~TestInstaller()
 void TestInstaller::unDo()
 {
     TestRegistry::getCurrentRegistry()->unDoLastAddTest();
+}
+
 }

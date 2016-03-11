@@ -28,6 +28,9 @@
 #include "CppUTest/TestHarness.h"
 #include "MockFailureReporterForTest.h"
 
+extern "C"
+{
+
 TEST_GROUP(MockReturnValueTest)
 {
   void teardown()
@@ -425,10 +428,15 @@ TEST(MockReturnValueTest, WhenNoPointerReturnValueIsExpectedButThereIsADefaultSh
     POINTERS_EQUAL(default_return_value, mock().returnPointerValueOrDefault(default_return_value));
 }
 
+extern "C"
+{
+    static void (*some_ptr)() = (void(*)()) 0x00107;
+    static void (*default_return_value)() = (void(*)()) 0x777;
+    static void (*expected_return_value)() = (void(*)()) 0x144000;
+}
+
 TEST(MockReturnValueTest, WhenAFunctionPointerReturnValueIsExpectedAndAlsoThereIsADefaultShouldlIgnoreTheDefault)
 {
-    void (*default_return_value)() = (void(*)()) 0x777;
-    void (*expected_return_value)() = (void(*)()) 0x144000;
     mock().expectOneCall("foo").andReturnValue(expected_return_value);
     FUNCTIONPOINTERS_EQUAL(expected_return_value, mock().actualCall("foo").returnFunctionPointerValueOrDefault(default_return_value));
     FUNCTIONPOINTERS_EQUAL(expected_return_value, mock().returnFunctionPointerValueOrDefault(default_return_value));
@@ -436,7 +444,6 @@ TEST(MockReturnValueTest, WhenAFunctionPointerReturnValueIsExpectedAndAlsoThereI
 
 TEST(MockReturnValueTest, WhenNoFunctionPointerReturnValueIsExpectedButThereIsADefaultShouldlUseTheDefaultValue)
 {
-    void (*default_return_value)() = (void(*)()) 0x10;
     mock().expectOneCall("foo");
     FUNCTIONPOINTERS_EQUAL(default_return_value, mock().actualCall("foo").returnFunctionPointerValueOrDefault(default_return_value));
     FUNCTIONPOINTERS_EQUAL(default_return_value, mock().returnFunctionPointerValueOrDefault(default_return_value));
@@ -465,13 +472,12 @@ TEST(MockReturnValueTest, ConstPointerReturnValue)
 
 TEST(MockReturnValueTest, FunctionPointerReturnValue)
 {
-    void (*ptr)() = (void(*)()) 0x00107;
-    mock().expectOneCall("foo").andReturnValue(ptr);
+    mock().expectOneCall("foo").andReturnValue(some_ptr);
     MockActualCall& actual_call = mock().actualCall("foo");
 
-    FUNCTIONPOINTERS_EQUAL(ptr, actual_call.returnValue().getFunctionPointerValue());
-    FUNCTIONPOINTERS_EQUAL(ptr, actual_call.returnFunctionPointerValue());
-    FUNCTIONPOINTERS_EQUAL(ptr, mock().functionPointerReturnValue());
+    FUNCTIONPOINTERS_EQUAL(some_ptr, actual_call.returnValue().getFunctionPointerValue());
+    FUNCTIONPOINTERS_EQUAL(some_ptr, actual_call.returnFunctionPointerValue());
+    FUNCTIONPOINTERS_EQUAL(some_ptr, mock().functionPointerReturnValue());
 }
 
 TEST(MockReturnValueTest, whenCallingDisabledOrIgnoredActualCallsThenTheyDontReturnPreviousCallsValues)
@@ -484,3 +490,4 @@ TEST(MockReturnValueTest, whenCallingDisabledOrIgnoredActualCallsThenTheyDontRet
     CHECK(!mock().hasReturnValue());
 }
 
+}
