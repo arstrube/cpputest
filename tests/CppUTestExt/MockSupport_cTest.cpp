@@ -32,6 +32,8 @@
 #include "MockSupport_cTestCFile.h"
 #include "CppUTestExt/OrderedTest.h"
 
+extern "C" {
+
 TEST_GROUP(MockSupport_c)
 {
 };
@@ -93,7 +95,7 @@ TEST(MockSupport_c, expectAndActualParameters)
             withFunctionPointerParameters("functionPointer", (void(*)()) 1);
 }
 
-extern "C"{
+extern "C" {
 
     static int typeNameIsEqual(const void* object1, const void* object2)
     {
@@ -605,4 +607,6 @@ TEST(MockSupport_c, ignoreOtherCalls)
     mock_c()->actualCall("foo");
     mock_c()->actualCall("bar");
     mock_c()->checkExpectations();
+}
+
 }

@@ -32,6 +32,8 @@
  * This is needed when comparing values of non-native type.
  */
 
+extern "C" {
+
 class MockNamedValueComparator
 {
 public:
@@ -219,5 +221,7 @@ public:
 
     void clear();
 };
+
+}
 
 #endif

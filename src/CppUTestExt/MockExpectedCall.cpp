@@ -28,6 +28,9 @@
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockCheckedExpectedCall.h"
 
+extern "C"
+{
+
 MockExpectedCall::MockExpectedCall()
 {
 }
@@ -710,3 +713,6 @@ MockExpectedCall& MockIgnoredExpectedCall::instance()
     static MockIgnoredExpectedCall call;
     return call;
 }
+
+}
+

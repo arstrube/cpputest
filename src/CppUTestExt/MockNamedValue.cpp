@@ -29,6 +29,8 @@
 #include "CppUTestExt/MockNamedValue.h"
 #include "CppUTest/PlatformSpecificFunctions.h"
 
+extern "C"
+{
 
 MockNamedValueComparatorsAndCopiersRepository* MockNamedValue::defaultRepository_ = NULL;
 
@@ -473,4 +475,6 @@ void MockNamedValueComparatorsAndCopiersRepository::installComparatorsAndCopiers
 {
     for (MockNamedValueComparatorsAndCopiersRepositoryNode* p = repository.head_; p; p = p->next_)
       head_ = new MockNamedValueComparatorsAndCopiersRepositoryNode(p->name_, p->comparator_, head_);
+}
+
 }

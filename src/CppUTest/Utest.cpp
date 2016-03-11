@@ -30,6 +30,8 @@
 #include "CppUTest/PlatformSpecificFunctions.h"
 #include "CppUTest/TestOutput.h"
 
+extern "C" {
+
 bool doubles_equal(double d1, double d2, double threshold)
 {
     if (PlatformSpecificIsNan(d1) || PlatformSpecificIsNan(d2) || PlatformSpecificIsNan(threshold))
@@ -674,4 +676,6 @@ TestInstaller::~TestInstaller()
 void TestInstaller::unDo()
 {
     TestRegistry::getCurrentRegistry()->unDoLastAddTest();
+}
+
 }

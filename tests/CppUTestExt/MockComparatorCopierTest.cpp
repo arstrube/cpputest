@@ -36,6 +36,9 @@ TEST_GROUP(MockComparatorCopierTest)
   }
 };
 
+extern "C"
+{
+
 class MyTypeForTesting
 {
 public:
@@ -597,3 +600,4 @@ TEST(MockComparatorCopierTest, shouldSupportConstParameters)
     mock().checkExpectations();
 }
 
+}

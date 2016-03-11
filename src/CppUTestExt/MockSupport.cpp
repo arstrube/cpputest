@@ -33,6 +33,9 @@
 
 #define MOCK_SUPPORT_SCOPE_PREFIX "!!!$$$MockingSupportScope$$$!!!"
 
+extern "C"
+{
+
 static MockSupport global_mock;
 
 MockSupport& mock(const SimpleString& mockName, MockFailureReporter* failureReporterForThisCall)
@@ -590,4 +593,6 @@ bool MockSupport::hasReturnValue()
 {
     if (lastActualFunctionCall_) return lastActualFunctionCall_->hasReturnValue();
     return false;
+}
+
 }

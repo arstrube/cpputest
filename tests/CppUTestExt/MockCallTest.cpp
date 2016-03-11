@@ -29,6 +29,9 @@
 #include "CppUTest/TestTestingFixture.h"
 #include "MockFailureReporterForTest.h"
 
+extern "C"
+{
+
 TEST_GROUP(MockCallTest)
 {
   void teardown()
@@ -392,3 +395,4 @@ TEST(MockCallTest, mockExpectationShouldIncreaseNumberOfChecks)
     LONGS_EQUAL(5, fixture.getCheckCount());
 }
 
+}

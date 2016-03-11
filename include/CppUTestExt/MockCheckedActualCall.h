@@ -31,6 +31,8 @@
 #include "CppUTestExt/MockActualCall.h"
 #include "CppUTestExt/MockExpectedCallsList.h"
 
+extern "C" {
+    
 class MockCheckedActualCall : public MockActualCall
 {
 public:
@@ -256,5 +258,7 @@ public:
 
     static MockIgnoredActualCall& instance();
 };
+
+}
 
 #endif

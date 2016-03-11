@@ -31,6 +31,9 @@
 #include "CppUTestExt/MockExpectedCall.h"
 #include "CppUTestExt/MockNamedValue.h"
 
+extern "C"
+{
+
 class MockCheckedExpectedCall : public MockExpectedCall
 {
 
@@ -209,5 +212,7 @@ public:
 
     static MockExpectedCall& instance();
 };
+
+}
 
 #endif

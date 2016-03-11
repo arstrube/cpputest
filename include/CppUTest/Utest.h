@@ -34,6 +34,10 @@
 #include "SimpleString.h"
 
 class TestResult;
+
+extern "C"
+{
+
 class TestPlugin;
 class TestFailure;
 class TestFilter;
@@ -248,5 +252,7 @@ private:
     TestInstaller& operator=(const TestInstaller&);
 
 };
+
+}
 
 #endif
