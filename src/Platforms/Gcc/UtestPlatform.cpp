@@ -235,10 +235,8 @@ void* (*PlatformSpecificMemset)(void*, int, size_t) = memset;
 /* GCC 4.9.x introduces -Wfloat-conversion, which causes a warning / error in its own (macro)
  * implementation of isnan() and isinf().
  */
-#if defined(__GNUC__)
- #if __GNUC__ >= 5 || ( __GNUC__ == 4 && __GNUC_MINOR__ > 8 )
-  #pragma GCC diagnostic ignored "-Wfloat-conversion"
- #endif
+#if defined(__GNUC__) && ( __GNUC__ >= 5 || ( __GNUC__ == 4 && __GNUC_MINOR__ > 8 ) )
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
 #endif
 
 static int IsNanImplementation(double d)
