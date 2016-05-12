@@ -30,7 +30,7 @@
 #include "CppUTest/TestRegistry.h"
 #include "CppUTestExt/IEEE754ExceptionsPlugin.h"
 
-#ifdef CPPUTEST_HAVE_FENV
+#if 1 //def CPPUTEST_HAVE_FENV
 
 /*
  * To see a demonstration of tests failing as a result of IEEE754ExceptionsPlugin
@@ -62,15 +62,15 @@ IGNORE_TEST(FE_Demo, should_fail_when__FE_DIVBYZERO__is_set)
 
 IGNORE_TEST(FE_Demo, should_fail_when__FE_UNDERFLOW__is_set)
 {
-    f = 0.01f;
-    while (f > 0.0f) f *= f;
+    f = 1e-38f;
+    f *= f;
     CHECK(f == 0.0f);
 }
 
 IGNORE_TEST(FE_Demo, should_fail_when__FE_OVERFLOW__is_set)
 {
-    f = 1000.0f;
-    while (f < std::numeric_limits<float>::infinity()) f *= f;
+    f = 1e38f;
+    f *= f;
     CHECK(f >= std::numeric_limits<float>::infinity());
 }
 
